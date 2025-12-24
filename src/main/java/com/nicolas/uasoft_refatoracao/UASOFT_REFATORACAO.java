@@ -3,7 +3,6 @@ package com.nicolas.uasoft_refatoracao;
 import com.nicolas.uasoft_refatoracao.DAO.ClienteDAO;
 import com.nicolas.uasoft_refatoracao.DAO.EspecieDAO;
 import com.nicolas.uasoft_refatoracao.DAO.FuncionarioDAO;
-import com.nicolas.uasoft_refatoracao.dtos.requisicao.requisicaoClienteDTO;
 import com.nicolas.uasoft_refatoracao.services.ClienteService;
 import com.nicolas.uasoft_refatoracao.services.EspecieService;
 import com.nicolas.uasoft_refatoracao.services.FuncionarioService;
