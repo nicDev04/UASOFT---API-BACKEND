@@ -1,18 +1,19 @@
 package com.nicolas.uasoft.services;
 
-import com.nicolas.uasoft_refatoracao.DAO.ClienteDAO;
-import com.nicolas.uasoft_refatoracao.classes.Cliente;
-import com.nicolas.uasoft_refatoracao.dtos.requisicao.requisicaoClienteDTO;
+import com.nicolas.uasoft.classes.Cliente;
+import com.nicolas.uasoft.dtos.requisicao.requisicaoClienteDTO;
+import com.nicolas.uasoft.dtos.resposta.respostaClienteDTO;
+import com.nicolas.uasoft.repository.ClienteRepository;
 
 public class ClienteService {
-    
-    private ClienteDAO clienteDAO;
 
-    public ClienteService(ClienteDAO clienteDAO) {
-        this.clienteDAO = clienteDAO;
+    private ClienteRepository clienteRepository;
+
+    public ClienteService(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
     }
-    
-    public void salvarCliente(requisicaoClienteDTO dadosCliente) {
+
+    public respostaClienteDTO salvarCliente(requisicaoClienteDTO dadosCliente) {
         Cliente cliente = new Cliente(
                 dadosCliente.getNome(),
                 dadosCliente.getCpf(),
@@ -20,7 +21,16 @@ public class ClienteService {
                 dadosCliente.getTelefone(),
                 dadosCliente.getEndereco()
         );
-        
-        clienteDAO.cadastrarCliente(cliente);
+
+        Cliente clienteSalvo =  clienteRepository.save(cliente);
+
+        return new respostaClienteDTO(
+                clienteSalvo.getIdCliente(),
+                clienteSalvo.getNomeC(),
+                clienteSalvo.getCpfC(),
+                clienteSalvo.getSexoC(),
+                clienteSalvo.getEnderecoC(),
+                clienteSalvo.getTelefoneC()
+        );
     }
 }
