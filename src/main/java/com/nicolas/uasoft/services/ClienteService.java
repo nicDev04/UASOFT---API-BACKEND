@@ -5,6 +5,8 @@ import com.nicolas.uasoft.dtos.requisicao.requisicaoClienteDTO;
 import com.nicolas.uasoft.dtos.resposta.respostaClienteDTO;
 import com.nicolas.uasoft.repository.ClienteRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ClienteService {
@@ -24,7 +26,7 @@ public class ClienteService {
                 dadosCliente.getEndereco()
         );
 
-        Cliente clienteSalvo =  clienteRepository.save(cliente);
+        Cliente clienteSalvo = clienteRepository.save(cliente);
 
         return new respostaClienteDTO(
                 clienteSalvo.getIdCliente(),
@@ -53,4 +55,53 @@ public class ClienteService {
         }
         return null;
     }
+
+    public List<respostaClienteDTO> buscarClientes() {
+        List<Cliente> clientes = clienteRepository.findAll();
+        List<respostaClienteDTO> responseClientes = new ArrayList<>();
+
+        if (clientes.isEmpty()) {
+            throw new RuntimeException("Clientes não encontrados");
+        } else {
+            for (Cliente cliente : clientes) {
+                respostaClienteDTO clienteResponse = new respostaClienteDTO(
+                        cliente.getIdCliente(),
+                        cliente.getNomeC(),
+                        cliente.getCpfC(),
+                        cliente.getSexoC(),
+                        cliente.getEnderecoC(),
+                        cliente.getTelefoneC()
+                );
+                responseClientes.add(clienteResponse);
+            }
+            return responseClientes;
+        }
+    }
+
+    public respostaClienteDTO editarDadosCliente(Long id, requisicaoClienteDTO dadoscliente) {
+        Optional<Cliente> clienteEditar = clienteRepository.findById(id);
+
+        if (clienteEditar.isEmpty()) {
+            throw new RuntimeException("Erro ao tentar editar dados do cliente");
+        } else {
+            Cliente cliente = clienteEditar.get();
+
+            cliente.setNomeC(dadoscliente.getNome());
+            cliente.setCpfC(dadoscliente.getCpf());
+            cliente.setTelefoneC(dadoscliente.getTelefone());
+            cliente.setSexoC(dadoscliente.getSexo());
+
+            Cliente clienteEditado = clienteRepository.save(cliente);
+
+            return new respostaClienteDTO(
+                    cliente.getIdCliente(),
+                    cliente.getNomeC(),
+                    cliente.getCpfC(),
+                    cliente.getSexoC(),
+                    cliente.getEnderecoC(),
+                    cliente.getTelefoneC()
+            );
+        }
+    }
+
 }
