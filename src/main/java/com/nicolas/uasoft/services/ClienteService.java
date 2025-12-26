@@ -5,6 +5,8 @@ import com.nicolas.uasoft.dtos.requisicao.requisicaoClienteDTO;
 import com.nicolas.uasoft.dtos.resposta.respostaClienteDTO;
 import com.nicolas.uasoft.repository.ClienteRepository;
 
+import java.util.Optional;
+
 public class ClienteService {
 
     private ClienteRepository clienteRepository;
@@ -32,5 +34,23 @@ public class ClienteService {
                 clienteSalvo.getEnderecoC(),
                 clienteSalvo.getTelefoneC()
         );
+    }
+
+    public respostaClienteDTO buscarCliente(Long id) {
+        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+
+        if (clienteOptional.isPresent()) {
+            respostaClienteDTO dadosCliente = new respostaClienteDTO(
+                    clienteOptional.get().getIdCliente(),
+                    clienteOptional.get().getNomeC(),
+                    clienteOptional.get().getCpfC(),
+                    clienteOptional.get().getSexoC(),
+                    clienteOptional.get().getEnderecoC(),
+                    clienteOptional.get().getTelefoneC()
+            );
+
+            return dadosCliente;
+        }
+        return null;
     }
 }
