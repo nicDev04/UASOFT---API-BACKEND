@@ -8,11 +8,13 @@ import com.nicolas.uasoft.dtos.resposta.respostaProdutoDTO;
 import com.nicolas.uasoft.repository.GrupoRepository;
 import com.nicolas.uasoft.repository.MarcaRepository;
 import com.nicolas.uasoft.repository.ProdutoRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ProdutoService {
     
     private final MarcaRepository marcaRepository;

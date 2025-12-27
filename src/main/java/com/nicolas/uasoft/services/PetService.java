@@ -7,11 +7,13 @@ import com.nicolas.uasoft.repository.ClienteRepository;
 import com.nicolas.uasoft.repository.EspecieRepository;
 import com.nicolas.uasoft.repository.PetRepository;
 import com.nicolas.uasoft.repository.RacaRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class PetService {
 
     private final EspecieRepository especieRepository;

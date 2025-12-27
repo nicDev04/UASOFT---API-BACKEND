@@ -8,10 +8,12 @@ import com.nicolas.uasoft.dtos.resposta.respostaVendaDTO;
 import com.nicolas.uasoft.repository.ClienteRepository;
 import com.nicolas.uasoft.repository.ProdutoRepository;
 import com.nicolas.uasoft.repository.VendaRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
+@Service
 public class VendaService {
 
     private final VendaRepository vendaRepository;

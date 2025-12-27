@@ -5,11 +5,13 @@ import com.nicolas.uasoft.classes.Login;
 import com.nicolas.uasoft.dtos.requisicao.requisicaoFuncionarioDTO;
 import com.nicolas.uasoft.dtos.resposta.respostaFuncionarioDTO;
 import com.nicolas.uasoft.repository.FuncionarioRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class FuncionarioService {
     private final FuncionarioRepository funcionarioRepository;
 

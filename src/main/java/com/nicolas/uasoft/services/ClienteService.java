@@ -4,11 +4,13 @@ import com.nicolas.uasoft.classes.Cliente;
 import com.nicolas.uasoft.dtos.requisicao.requisicaoClienteDTO;
 import com.nicolas.uasoft.dtos.resposta.respostaClienteDTO;
 import com.nicolas.uasoft.repository.ClienteRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ClienteService {
 
     private ClienteRepository clienteRepository;
