@@ -1,29 +1,39 @@
 package com.nicolas.uasoft.services;
 
-import com.nicolas.uasoft_refatoracao.DAO.GrupoDAO;
-import com.nicolas.uasoft_refatoracao.DAO.MarcaDAO;
-import com.nicolas.uasoft_refatoracao.DAO.ProdutoDAO;
-import com.nicolas.uasoft_refatoracao.classes.Grupo;
-import com.nicolas.uasoft_refatoracao.classes.Marca;
-import com.nicolas.uasoft_refatoracao.classes.Produto;
-import com.nicolas.uasoft_refatoracao.dtos.requisicao.requisicaoProdutoDTO;
+import com.nicolas.uasoft.classes.Grupo;
+import com.nicolas.uasoft.classes.Marca;
+import com.nicolas.uasoft.classes.Produto;
+import com.nicolas.uasoft.dtos.requisicao.requisicaoProdutoDTO;
+import com.nicolas.uasoft.dtos.resposta.respostaProdutoDTO;
+import com.nicolas.uasoft.repository.GrupoRepository;
+import com.nicolas.uasoft.repository.MarcaRepository;
+import com.nicolas.uasoft.repository.ProdutoRepository;
+
+import java.util.Optional;
 
 public class ProdutoService {
     
-    private MarcaDAO marcaDAO;
-    private GrupoDAO grupoDAO;
-    private ProdutoDAO produtoDAO;
+    private final MarcaRepository marcaRepository;
+    private final GrupoRepository grupoRepository;
+    private final ProdutoRepository produtoRepository;
 
-    public ProdutoService(MarcaDAO marcaDAO, GrupoDAO grupoDAO, ProdutoDAO produtoDAO) {
-        this.marcaDAO = marcaDAO;
-        this.grupoDAO = grupoDAO;
-        this.produtoDAO = produtoDAO;
+    public ProdutoService(MarcaRepository marcaRepository, GrupoRepository grupoRepository, ProdutoRepository produtoRepository) {
+        this.marcaRepository = marcaRepository;
+        this.grupoRepository = grupoRepository;
+        this.produtoRepository = produtoRepository;
     }
-    
-    public void salvarProduto(requisicaoProdutoDTO dadosProduto) {
-        
-        Grupo grupo = grupoDAO.listarGrupo(dadosProduto.getGrupoId());
-        Marca marca = marcaDAO.listarMarca(dadosProduto.getMarcaId());
+
+    public respostaProdutoDTO salvarProduto(requisicaoProdutoDTO dadosProduto) {
+        Optional<Grupo> grupo = grupoRepository.findById(dadosProduto.getGrupoId());
+        Optional<Marca> marca = marcaRepository.findById(dadosProduto.getMarcaId());
+
+        if (marca.isEmpty()) {
+            throw new RuntimeException("Marca não encontrada");
+        }
+
+        if (grupo.isEmpty()) {
+            throw new RuntimeException("Grupo não encontrado");
+        }
         
         Produto produto = new Produto(
                 dadosProduto.getNome(),
@@ -31,10 +41,20 @@ public class ProdutoService {
                 dadosProduto.getValor(),
                 dadosProduto.getDescricao()
         );
-        
-        produto.setMarca(marca);
-        produto.setGrupo(grupo);
-        
-        produtoDAO.cadastrarProduto(produto);
+
+        produto.setMarca(marca.get());
+        produto.setGrupo(grupo.get());
+
+        Produto produtoSalvo = produtoRepository.save(produto);
+
+        return new respostaProdutoDTO (
+                produtoSalvo.getIdProduto(),
+                produtoSalvo.getNomeProd(),
+                produtoSalvo.getMarca().getNomeMarca(),
+                produtoSalvo.getGrupo().getNomeGrupo(),
+                produtoSalvo.getDescricaoProd(),
+                produtoSalvo.getUnVenda(),
+                produtoSalvo.getValorProd()
+        );
     }
 }
