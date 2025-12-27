@@ -1,14 +1,18 @@
 package com.nicolas.uasoft.services;
 
+import com.nicolas.uasoft.classes.Funcionario;
 import com.nicolas.uasoft.classes.Grupo;
 import com.nicolas.uasoft.classes.Marca;
 import com.nicolas.uasoft.classes.Produto;
 import com.nicolas.uasoft.dtos.requisicao.requisicaoProdutoDTO;
+import com.nicolas.uasoft.dtos.resposta.respostaFuncionarioDTO;
 import com.nicolas.uasoft.dtos.resposta.respostaProdutoDTO;
 import com.nicolas.uasoft.repository.GrupoRepository;
 import com.nicolas.uasoft.repository.MarcaRepository;
 import com.nicolas.uasoft.repository.ProdutoRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ProdutoService {
@@ -56,5 +60,83 @@ public class ProdutoService {
                 produtoSalvo.getUnVenda(),
                 produtoSalvo.getValorProd()
         );
+    }
+
+    public respostaProdutoDTO editar(Long id, requisicaoProdutoDTO dadosProduto) {
+        Optional<Produto> produtoOptional = produtoRepository.findById(id);
+
+        if (produtoOptional.isEmpty()) {
+            throw new RuntimeException("Produto não encontrado");
+        }
+
+        Optional<Grupo> grupo = grupoRepository.findById(dadosProduto.getGrupoId());
+        Optional<Marca> marca = marcaRepository.findById(dadosProduto.getMarcaId());
+
+        if (marca.isEmpty()) {
+            throw new RuntimeException("Marca não encontrada");
+        }
+
+        if (grupo.isEmpty()) {
+            throw new RuntimeException("Grupo não encontrado");
+        }
+
+        Produto produtoEditar = produtoOptional.get();
+
+        produtoEditar.setGrupo(grupo.get());
+        produtoEditar.setMarca(marca.get());
+        produtoEditar.setNomeProd(dadosProduto.getNome());
+        produtoEditar.setValorProd(dadosProduto.getValor());
+        produtoEditar.setUnVenda(dadosProduto.getUnVenda());
+        produtoEditar.setDescricaoProd(dadosProduto.getDescricao());
+
+        Produto produtoEditado = produtoRepository.save(produtoEditar);
+
+        return new respostaProdutoDTO (
+                produtoEditado.getIdProduto(),
+                produtoEditado.getNomeProd(),
+                produtoEditado.getMarca().getNomeMarca(),
+                produtoEditado.getGrupo().getNomeGrupo(),
+                produtoEditado.getDescricaoProd(),
+                produtoEditado.getUnVenda(),
+                produtoEditado.getValorProd()
+        );
+    }
+
+    public List<respostaProdutoDTO> listarProdutos() {
+        List<respostaProdutoDTO> listaDadosProdutos = new ArrayList<>();
+        List<Produto> listaProdutos = produtoRepository.findAll();
+
+        for (Produto produto : listaProdutos) {
+            listaDadosProdutos.add( new respostaProdutoDTO (
+                    produto.getIdProduto(),
+                    produto.getNomeProd(),
+                    produto.getMarca().getNomeMarca(),
+                    produto.getGrupo().getNomeGrupo(),
+                    produto.getDescricaoProd(),
+                    produto.getUnVenda(),
+                    produto.getValorProd()
+            ));
+        }
+        return listaDadosProdutos   ;
+    }
+
+
+    public respostaProdutoDTO listarFuncionario(Long id) {
+        Optional<Produto> produtoOptional = produtoRepository.findById(id);
+
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+
+            return  new respostaProdutoDTO (
+                    produto.getIdProduto(),
+                    produto.getNomeProd(),
+                    produto.getMarca().getNomeMarca(),
+                    produto.getGrupo().getNomeGrupo(),
+                    produto.getDescricaoProd(),
+                    produto.getUnVenda(),
+                    produto.getValorProd()
+            );
+        }
+        return null;
     }
 }
