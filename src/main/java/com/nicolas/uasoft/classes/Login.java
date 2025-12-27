@@ -9,8 +9,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
-
-
 @Entity
 @Table(name = "tbLogin")
 public class Login {
@@ -22,8 +20,6 @@ public class Login {
     @Column(name = "login")
     private String login;
 
-    
-    
     @Column(name = "senha")
     private String senha;
     
