@@ -1,8 +1,9 @@
 package com.nicolas.uasoft.controller;
 
 import com.nicolas.uasoft.dtos.requisicao.requisicaoFuncionarioDTO;
-import com.nicolas.uasoft.dtos.resposta.respostaClienteDTO;
+import com.nicolas.uasoft.dtos.requisicao.requisicaoPetDTO;
 import com.nicolas.uasoft.dtos.resposta.respostaFuncionarioDTO;
+import com.nicolas.uasoft.dtos.resposta.respostaPetDTO;
 import com.nicolas.uasoft.services.FuncionarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +67,23 @@ public class FuncionarioController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             response.put("mensagem", "funcionários não encontrados");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editarFuncionario(@PathVariable Long id, @RequestBody requisicaoFuncionarioDTO dadosFuncionario) {
+        try {
+            respostaFuncionarioDTO funcionarioEditado = funcionarioService.editarFuncionario(id, dadosFuncionario);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("mensagem", "Funcionário editado com sucesso");
+            response.put("funcionario", funcionarioEditado);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("mensagem", e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }

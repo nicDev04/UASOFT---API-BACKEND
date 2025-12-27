@@ -18,7 +18,6 @@ public class FuncionarioService {
     }
 
     public respostaFuncionarioDTO salvarFuncionario(requisicaoFuncionarioDTO  dadosFuncionario) {
-
         Login login = new Login(dadosFuncionario.getUsuario(), dadosFuncionario.getSenha());
 
         Funcionario funcionario = new Funcionario(
@@ -44,6 +43,38 @@ public class FuncionarioService {
                 funcionarioSalvo.getTelefoneF(),
                 funcionarioSalvo.getCargoF(),
                 funcionarioSalvo.getLogin().getLogin()
+        );
+    }
+
+    public respostaFuncionarioDTO editarFuncionario(Long id, requisicaoFuncionarioDTO  dadosFuncionario) {
+
+        Optional<Funcionario> funcionarioEditarOptional = funcionarioRepository.findById(id);
+
+        if (funcionarioEditarOptional.isEmpty()) {
+            throw new RuntimeException("Dados do funcionário não encontrado");
+        }
+
+        Funcionario funcionarioEditar = funcionarioEditarOptional.get();
+
+        funcionarioEditar.setCargoF(dadosFuncionario.getCargo());
+        funcionarioEditar.setCpfF(dadosFuncionario.getCpf());
+        funcionarioEditar.setSexoF(dadosFuncionario.getSexo());
+        funcionarioEditar.setEnderecoF(dadosFuncionario.getEndereco());
+
+        funcionarioEditar.getLogin().setLogin(dadosFuncionario.getUsuario());
+        funcionarioEditar.getLogin().setSenha(dadosFuncionario.getSenha());
+
+        Funcionario funcionarioEditado  = funcionarioRepository.save(funcionarioEditar);
+
+        return  new respostaFuncionarioDTO(
+                funcionarioEditado.getIdFuncionario(),
+                funcionarioEditado.getNomeF(),
+                funcionarioEditado.getCpfF(),
+                funcionarioEditado.getSexoF(),
+                funcionarioEditado.getEnderecoF(),
+                funcionarioEditado.getTelefoneF(),
+                funcionarioEditado.getCargoF(),
+                funcionarioEditado.getLogin().getLogin()
         );
     }
 
