@@ -19,9 +19,6 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idPet;
 
-    public Pet() {
-    }
-
     @Column(name = "nomePet")
     private String nomePet;
 
@@ -50,6 +47,9 @@ public class Pet {
         this.especie = especie;
         this.raca = raca;
         this.cliente = cliente;
+    }
+
+    public Pet() {
     }
 
     public long getIdPet() {
