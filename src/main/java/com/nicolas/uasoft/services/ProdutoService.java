@@ -1,11 +1,9 @@
 package com.nicolas.uasoft.services;
 
-import com.nicolas.uasoft.classes.Funcionario;
 import com.nicolas.uasoft.classes.Grupo;
 import com.nicolas.uasoft.classes.Marca;
 import com.nicolas.uasoft.classes.Produto;
 import com.nicolas.uasoft.dtos.requisicao.requisicaoProdutoDTO;
-import com.nicolas.uasoft.dtos.resposta.respostaFuncionarioDTO;
 import com.nicolas.uasoft.dtos.resposta.respostaProdutoDTO;
 import com.nicolas.uasoft.repository.GrupoRepository;
 import com.nicolas.uasoft.repository.MarcaRepository;

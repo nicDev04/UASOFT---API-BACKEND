@@ -1,10 +1,4 @@
 package com.nicolas.uasoft.dtos.resposta;
-
-import com.nicolas.uasoft.classes.Cliente;
-import com.nicolas.uasoft.classes.Especie;
-import com.nicolas.uasoft.classes.Raca;
-import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 public class respostaPetDTO {

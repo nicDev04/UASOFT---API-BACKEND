@@ -1,9 +1,6 @@
 package com.nicolas.uasoft.services;
 
-import com.nicolas.uasoft.classes.Cliente;
-import com.nicolas.uasoft.classes.Especie;
-import com.nicolas.uasoft.classes.Pet;
-import com.nicolas.uasoft.classes.Raca;
+import com.nicolas.uasoft.classes.*;
 import com.nicolas.uasoft.dtos.requisicao.requisicaoPetDTO;
 import com.nicolas.uasoft.dtos.resposta.respostaPetDTO;
 import com.nicolas.uasoft.repository.ClienteRepository;
@@ -11,6 +8,8 @@ import com.nicolas.uasoft.repository.EspecieRepository;
 import com.nicolas.uasoft.repository.PetRepository;
 import com.nicolas.uasoft.repository.RacaRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class PetService {
@@ -28,19 +27,17 @@ public class PetService {
     }
 
     public respostaPetDTO salvarPet(requisicaoPetDTO dadosPet) {
-
         Optional<Cliente> tutor = clienteRepository.findById(dadosPet.getClienteId());
-        Optional<Especie> especiePet = especieRepository.findById(dadosPet.getEspecieId());
-        Optional<Raca> racaPet = racaRepository.findById(dadosPet.getRacaId());
-
         if (tutor.isEmpty()) {
             throw new RuntimeException("Tutor não encontrado");
         }
 
+        Optional<Especie> especiePet = especieRepository.findById(dadosPet.getEspecieId());
         if (especiePet.isEmpty()) {
             throw new RuntimeException("Espécie não encontrada");
         }
 
+        Optional<Raca> racaPet = racaRepository.findById(dadosPet.getRacaId());
         if (racaPet.isEmpty()) {
             throw new RuntimeException("Raça não encontrada");
         }
@@ -53,6 +50,7 @@ public class PetService {
                 racaPet.get(),
                 tutor.get()
         );
+
         Pet petCadastrado = petRepository.save(pet);
 
         return new respostaPetDTO (
@@ -65,6 +63,89 @@ public class PetService {
                 petCadastrado.getCliente().getNomeC()
         );
     }
+
+    public respostaPetDTO editarPet(Long id, requisicaoPetDTO dadosPet) {
+        Optional<Pet> petEditarOptional = petRepository.findById(id);
+
+        if (petEditarOptional.isEmpty()) {
+            throw new RuntimeException("Dados do pet não encontrado");
+        }
+
+        Optional<Cliente> tutor = clienteRepository.findById(dadosPet.getClienteId());
+        if (tutor.isEmpty()) {
+            throw new RuntimeException("Tutor não encontrado");
+        }
+
+        Optional<Especie> especiePet = especieRepository.findById(dadosPet.getEspecieId());
+        if (especiePet.isEmpty()) {
+            throw new RuntimeException("Espécie não encontrada");
+        }
+
+        Optional<Raca> racaPet = racaRepository.findById(dadosPet.getRacaId());
+        if (racaPet.isEmpty()) {
+            throw new RuntimeException("Raça não encontrada");
+        }
+
+        Pet petEditar = petEditarOptional.get();
+
+        petEditar.setNomePet(dadosPet.getNome());
+        petEditar.setSexoPet(dadosPet.getSexo());
+        petEditar.setDataNascPet(dadosPet.getDataNascimento());
+        petEditar.setEspecie(especiePet.get());
+        petEditar.setRaca(racaPet.get());
+        petEditar.setCliente(tutor.get());
+
+        Pet petEditado = petRepository.save(petEditar);
+
+        return new respostaPetDTO (
+                petEditado.getIdPet(),
+                petEditado.getNomePet(),
+                petEditado.getSexoPet(),
+                petEditado.getDataNascPet(),
+                petEditado.getEspecie().getNomeEspecie(),
+                petEditado.getRaca().getNomeRaca(),
+                petEditado.getCliente().getNomeC()
+        );
+    }
+
+    public respostaPetDTO listarPet(Long id) {
+        Optional<Pet> petOptional =petRepository.findById(id);
+
+        if (petOptional.isPresent()) {
+            Pet pet = petOptional.get();
+
+            return new respostaPetDTO (
+                    pet.getIdPet(),
+                    pet.getNomePet(),
+                    pet.getSexoPet(),
+                    pet.getDataNascPet(),
+                    pet.getEspecie().getNomeEspecie(),
+                    pet.getRaca().getNomeRaca(),
+                    pet.getCliente().getNomeC()
+            );
+        }
+        return null;
+    }
+
+    public List<respostaPetDTO> listarPets() {
+        List<respostaPetDTO> listaDadosPets = new ArrayList<>();
+
+        List<Pet> listaPets = petRepository.findAll();
+
+        for (Pet pet : listaPets) {
+            listaDadosPets.add( new respostaPetDTO (
+                    pet.getIdPet(),
+                    pet.getNomePet(),
+                    pet.getSexoPet(),
+                    pet.getDataNascPet(),
+                    pet.getEspecie().getNomeEspecie(),
+                    pet.getRaca().getNomeRaca(),
+                    pet.getCliente().getNomeC()
+            ));
+        }
+        return listaDadosPets;
+    }
+
 
 
 }
