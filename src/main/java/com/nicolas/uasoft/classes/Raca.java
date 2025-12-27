@@ -16,7 +16,7 @@ public class Raca {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idRaca;
-    
+
     @Column(name = "nomeRaca")
     private String nomeRaca;
     
