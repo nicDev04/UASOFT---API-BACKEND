@@ -94,12 +94,12 @@ public class ClienteService {
             Cliente clienteEditado = clienteRepository.save(cliente);
 
             return new respostaClienteDTO(
-                    cliente.getIdCliente(),
-                    cliente.getNomeC(),
-                    cliente.getCpfC(),
-                    cliente.getSexoC(),
-                    cliente.getEnderecoC(),
-                    cliente.getTelefoneC()
+                    clienteEditado.getIdCliente(),
+                    clienteEditado.getNomeC(),
+                    clienteEditado.getCpfC(),
+                    clienteEditado.getSexoC(),
+                    clienteEditado.getEnderecoC(),
+                    clienteEditado.getTelefoneC()
             );
         }
     }
