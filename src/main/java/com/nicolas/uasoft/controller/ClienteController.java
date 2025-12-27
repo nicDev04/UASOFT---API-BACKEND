@@ -69,7 +69,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editCustomer(@PathVariable Long id, @RequestBody requisicaoClienteDTO dadosCliente) {
+    public ResponseEntity<?> editarCliente(@PathVariable Long id, @RequestBody requisicaoClienteDTO dadosCliente) {
 
         respostaClienteDTO clienteEditado = clienteService.editarDadosCliente(id, dadosCliente);
 
