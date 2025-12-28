@@ -1,5 +1,6 @@
 package com.nicolas.uasoft.controller;
 
+import com.nicolas.uasoft.classes.Pet;
 import com.nicolas.uasoft.dtos.requisicao.requisicaoPetDTO;
 import com.nicolas.uasoft.dtos.resposta.respostaPetDTO;
 import com.nicolas.uasoft.services.PetService;
@@ -84,5 +85,15 @@ public class PetController {
             response.put("mensagem", e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/tutor/{idTutor}")
+    public ResponseEntity<?> listarPorTutor(@PathVariable Long idTutor) {
+        List<respostaPetDTO> pets = petService.findByTutorId(idTutor);
+
+        Map<String, Object> resposta = new HashMap<>();
+        resposta.put("pets", pets);
+
+        return ResponseEntity.ok(resposta);
     }
 }

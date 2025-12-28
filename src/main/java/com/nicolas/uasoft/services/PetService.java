@@ -160,6 +160,28 @@ public class PetService {
         return listaDadosPets;
     }
 
+    public List<respostaPetDTO> findByTutorId(Long idCliente) {
+        List<Pet> listaPets = petRepository.findByClienteIdCliente(idCliente);
+
+        List<respostaPetDTO> listaDadosPets = new ArrayList<>();
+
+        for (Pet pet : listaPets) {
+            listaDadosPets.add( new respostaPetDTO (
+                    pet.getIdPet(),
+                    pet.getNomePet(),
+                    pet.getSexoPet(),
+                    pet.getDataNascPet(),
+                    pet.getEspecie().getIdEspecie(),
+                    pet.getEspecie().getNomeEspecie(),
+                    pet.getRaca().getIdRaca(),
+                    pet.getRaca().getNomeRaca(),
+                    pet.getCliente().getIdCliente(),
+                    pet.getCliente().getNomeC()
+            ));
+        }
+        return listaDadosPets;
+    }
+
 
 
 }
