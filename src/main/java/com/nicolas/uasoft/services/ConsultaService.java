@@ -1,11 +1,9 @@
 package com.nicolas.uasoft.services;
 
-import com.nicolas.uasoft.classes.Cliente;
-import com.nicolas.uasoft.classes.Consulta;
-import com.nicolas.uasoft.classes.Funcionario;
-import com.nicolas.uasoft.classes.Pet;
+import com.nicolas.uasoft.classes.*;
 import com.nicolas.uasoft.dtos.requisicao.requisicaoConsultaDTO;
 import com.nicolas.uasoft.dtos.resposta.respostaConsultaDTO;
+import com.nicolas.uasoft.dtos.resposta.respostaVendaDTO;
 import com.nicolas.uasoft.repository.ClienteRepository;
 import com.nicolas.uasoft.repository.ConsultaRepository;
 import com.nicolas.uasoft.repository.FuncionarioRepository;
@@ -14,6 +12,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -70,5 +70,27 @@ public class ConsultaService {
                 consultaSalva.getValorMedicamentos(),
                 consultaSalva.getObservacoes()
         );
+    }
+
+    public List<respostaConsultaDTO> buscarConsultas() {
+        List<Consulta> consultas = consultaRepository.findAll();
+        List<respostaConsultaDTO> dadosConsultas = new ArrayList<>();
+
+        if (!consultas.isEmpty()) {
+            for (Consulta consulta : consultas) {
+                respostaConsultaDTO dadosConsulta = new respostaConsultaDTO(
+                        consulta.getIdConsulta(),
+                        consulta.getCliente().getNomeC(),
+                        consulta.getPet().getNomePet(),
+                        consulta.getFuncionario().getNomeF(),
+                        consulta.getDataConsulta(),
+                        consulta.getValorConsulta(),
+                        consulta.getValorMedicamentos(),
+                        consulta.getObservacoes()
+                );
+                dadosConsultas.add(dadosConsulta);
+            }
+        }
+        return dadosConsultas;
     }
 }

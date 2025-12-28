@@ -60,8 +60,11 @@ public class PetService {
                 petCadastrado.getNomePet(),
                 petCadastrado.getSexoPet(),
                 petCadastrado.getDataNascPet(),
+                petCadastrado.getEspecie().getIdEspecie(),
                 petCadastrado.getEspecie().getNomeEspecie(),
+                petCadastrado.getRaca().getIdRaca(),
                 petCadastrado.getRaca().getNomeRaca(),
+                petCadastrado.getCliente().getIdCliente(),
                 petCadastrado.getCliente().getNomeC()
         );
     }
@@ -104,8 +107,11 @@ public class PetService {
                 petEditado.getNomePet(),
                 petEditado.getSexoPet(),
                 petEditado.getDataNascPet(),
+                petEditado.getEspecie().getIdEspecie(),
                 petEditado.getEspecie().getNomeEspecie(),
+                petEditado.getRaca().getIdRaca(),
                 petEditado.getRaca().getNomeRaca(),
+                petEditado.getCliente().getIdCliente(),
                 petEditado.getCliente().getNomeC()
         );
     }
@@ -121,8 +127,11 @@ public class PetService {
                     pet.getNomePet(),
                     pet.getSexoPet(),
                     pet.getDataNascPet(),
+                    pet.getEspecie().getIdEspecie(),
                     pet.getEspecie().getNomeEspecie(),
+                    pet.getRaca().getIdRaca(),
                     pet.getRaca().getNomeRaca(),
+                    pet.getCliente().getIdCliente(),
                     pet.getCliente().getNomeC()
             );
         }
@@ -140,8 +149,11 @@ public class PetService {
                     pet.getNomePet(),
                     pet.getSexoPet(),
                     pet.getDataNascPet(),
+                    pet.getEspecie().getIdEspecie(),
                     pet.getEspecie().getNomeEspecie(),
+                    pet.getRaca().getIdRaca(),
                     pet.getRaca().getNomeRaca(),
+                    pet.getCliente().getIdCliente(),
                     pet.getCliente().getNomeC()
             ));
         }
