@@ -5,6 +5,8 @@ import com.nicolas.uasoft.classes.Login;
 import com.nicolas.uasoft.dtos.requisicao.requisicaoFuncionarioDTO;
 import com.nicolas.uasoft.dtos.resposta.respostaFuncionarioDTO;
 import com.nicolas.uasoft.repository.FuncionarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,8 +21,12 @@ public class FuncionarioService {
         this.funcionarioRepository = funcionarioRepository;
     }
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public respostaFuncionarioDTO salvarFuncionario(requisicaoFuncionarioDTO  dadosFuncionario) {
-        Login login = new Login(dadosFuncionario.getUsuario(), dadosFuncionario.getSenha());
+        String senhaHash = passwordEncoder.encode(dadosFuncionario.getSenha());
+        Login login = new Login(dadosFuncionario.getUsuario(), senhaHash);
 
         Funcionario funcionario = new Funcionario(
                 dadosFuncionario.getNome(),
@@ -49,7 +55,6 @@ public class FuncionarioService {
     }
 
     public respostaFuncionarioDTO editarFuncionario(Long id, requisicaoFuncionarioDTO  dadosFuncionario) {
-
         Optional<Funcionario> funcionarioEditarOptional = funcionarioRepository.findById(id);
 
         if (funcionarioEditarOptional.isEmpty()) {
@@ -64,7 +69,9 @@ public class FuncionarioService {
         funcionarioEditar.setEnderecoF(dadosFuncionario.getEndereco());
 
         funcionarioEditar.getLogin().setLogin(dadosFuncionario.getUsuario());
-        funcionarioEditar.getLogin().setSenha(dadosFuncionario.getSenha());
+
+        String senhaHash = passwordEncoder.encode(dadosFuncionario.getSenha());
+        funcionarioEditar.getLogin().setSenha(senhaHash);
 
         Funcionario funcionarioEditado  = funcionarioRepository.save(funcionarioEditar);
 
