@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController("/clientes")
+@RestController
+@RequestMapping("/clientes")
 public class ClienteController {
 
     private final ClienteService clienteService;
@@ -58,13 +59,13 @@ public class ClienteController {
 
         Map<String, Object> response = new HashMap<>();
 
-        if (dadosClientes != null) {
+        if (!dadosClientes.isEmpty()) {
             response.put("mensagem", "clientes encontrados");
             response.put("clientes", dadosClientes);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             response.put("mensagem", "clientes não encontrados");
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
         }
     }
 

@@ -72,7 +72,7 @@ public class ProdutoController {
         Map<String, Object> response = new HashMap<>();
 
         if (produto != null) {
-            response.put("mensagem", "Produto atualizado com sucesso");
+            response.put("mensagem", "Produto encontrado");
             response.put("produto", produto);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {

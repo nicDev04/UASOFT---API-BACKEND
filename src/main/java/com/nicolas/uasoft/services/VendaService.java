@@ -4,6 +4,7 @@ import com.nicolas.uasoft.classes.Cliente;
 import com.nicolas.uasoft.classes.Produto;
 import com.nicolas.uasoft.classes.Venda;
 import com.nicolas.uasoft.dtos.requisicao.requisicaoVendaDTO;
+import com.nicolas.uasoft.dtos.resposta.respostaClienteDTO;
 import com.nicolas.uasoft.dtos.resposta.respostaVendaDTO;
 import com.nicolas.uasoft.repository.ClienteRepository;
 import com.nicolas.uasoft.repository.ProdutoRepository;
@@ -11,6 +12,8 @@ import com.nicolas.uasoft.repository.VendaRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,5 +60,25 @@ public class VendaService {
         );
     }
 
+
+    public List<respostaVendaDTO> buscarVendas() {
+        List<Venda> vendas = vendaRepository.findAll();
+        List<respostaVendaDTO> dadosVendas = new ArrayList<>();
+
+        if (!vendas.isEmpty()) {
+            for (Venda venda : vendas) {
+                respostaVendaDTO clienteResponse = new respostaVendaDTO(
+                        venda.getIdVenda(),
+                        venda.getCliente().getNomeC(),
+                        venda.getProduto().getNomeProd(),
+                        venda.getQtdProduto(),
+                        venda.getTotalVenda(),
+                        venda.getDataVenda()
+                );
+                dadosVendas.add(clienteResponse);
+            }
+        }
+        return dadosVendas;
+    }
 
 }
