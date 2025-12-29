@@ -1,5 +1,9 @@
 ⚙️ UASOFT-API (Back-End)
 
+<div align="center">
+<img src="https://github.com/user-attachments/assets/fe588e6d-dd0d-48a8-80ce-d73c452dd7e1" width="600px"> 
+</div>
+
 Este é o núcleo do sistema UASOFT, uma API REST robusta desenvolvida para gerenciar as operações de uma clínica veterinária. O projeto foi construído utilizando Java 17 e o ecossistema Spring Boot, garantindo escalabilidade, segurança e uma estrutura organizada em camadas.
 
 🛠️ Tecnologias e Frameworks
